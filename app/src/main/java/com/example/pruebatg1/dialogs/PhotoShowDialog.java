@@ -1,5 +1,6 @@
 package com.example.pruebatg1.dialogs;
 
+import android.app.Dialog;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -67,8 +68,10 @@ public class PhotoShowDialog extends DialogFragment {
         lblDescription = view.findViewById(R.id.lblDescription);
         btnAccept = view.findViewById(R.id.btnAccept);
 
-        Bitmap bitmap = BitmapFactory.decodeByteArray(image, 0, image.length);
-        imgPhoto.setImageBitmap(bitmap);
+        if(image != null) {
+            Bitmap bitmap = BitmapFactory.decodeByteArray(image, 0, image.length);
+            imgPhoto.setImageBitmap(bitmap);
+        }
 
         lblName.setText(name);
         lblDescription.setText(description);
@@ -81,6 +84,17 @@ public class PhotoShowDialog extends DialogFragment {
         });
 
         return view;
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+
+        Dialog dialog = getDialog();
+        if (dialog != null) {
+            dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+            //dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        }
     }
 
     @Override

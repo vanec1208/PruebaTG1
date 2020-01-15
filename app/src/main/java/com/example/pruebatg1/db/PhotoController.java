@@ -4,6 +4,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
 
 import com.example.pruebatg1.beans.Photo;
 
@@ -20,7 +21,6 @@ public class PhotoController {
        values.put(TgTables.PhotoTable.IMAGE, image);
 
         db.insert(TgTables.PhotoTable.TABLE_NAME, null, values);
-        db.close();
    }
 
    public static ArrayList<Photo> getListPhotos(Context context){
@@ -35,12 +35,15 @@ public class PhotoController {
         Cursor c = db.query(TgTables.PhotoTable.TABLE_NAME, columns,
                 null, null, null, null, null);
 
-        while (c.moveToFirst()) {
+        while (c.moveToNext()) {
             Photo photo = new Photo();
             photo.setName(c.getString(0));
             photo.setDescription(c.getString(1));
             photo.setImage(c.getBlob(2));
+            listPhotos.add(photo);
         }
+
+       Log.d("getPicture", "List: " + listPhotos.toString());
 
         return listPhotos;
    }

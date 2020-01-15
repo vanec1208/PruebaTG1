@@ -7,6 +7,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -40,14 +41,15 @@ public class PhotoListFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_photo_list, container, false);
+        Log.d("getPicture", "Holaaaa");
 
         recyclerView = view.findViewById(R.id.recyclerView);
         btnAccept = view.findViewById(R.id.btnAccept);
 
-        recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(context));
+        recyclerView.setHasFixedSize(true);
         listPhotos = PhotoController.getListPhotos(context);
-        recyclerView.setAdapter(new MyPhotoAdapter(listPhotos));
+        recyclerView.setAdapter(new MyPhotoAdapter(context, listPhotos));
 
         btnAccept.setOnClickListener(new View.OnClickListener() {
             @Override

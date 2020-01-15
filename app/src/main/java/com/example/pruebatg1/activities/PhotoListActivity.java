@@ -15,6 +15,6 @@ public class PhotoListActivity extends AppCompatActivity {
         setContentView(R.layout.activity_photo_list);
 
         PhotoListFragment photoListFragment = new PhotoListFragment();
-        getSupportFragmentManager().beginTransaction().add(R.id.frameLayout, photoListFragment);
+        getSupportFragmentManager().beginTransaction().add(R.id.frameLayout, photoListFragment).commit();
     }
 }

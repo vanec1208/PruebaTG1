@@ -1,5 +1,7 @@
 package com.example.pruebatg1.beans;
 
+import java.util.Arrays;
+
 public class Photo {
     private String name;
     private String description;
@@ -30,5 +32,14 @@ public class Photo {
 
     public void setImage(byte[] image) {
         this.image = image;
+    }
+
+    @Override
+    public String toString() {
+        return "Photo{" +
+                "name='" + name + '\'' +
+                ", description='" + description + '\'' +
+                ", image=" + Arrays.toString(image) +
+                '}';
     }
 }

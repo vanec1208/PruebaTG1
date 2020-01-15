@@ -1,14 +1,17 @@
 package com.example.pruebatg1.dialogs;
 
+import android.app.Dialog;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 
 import androidx.fragment.app.DialogFragment;
 
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,6 +21,8 @@ import android.widget.ImageView;
 
 import com.example.pruebatg1.R;
 import com.example.pruebatg1.db.PhotoController;
+import com.example.pruebatg1.util.Util;
+import com.rw.loadingdialog.LoadingView;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -34,6 +39,9 @@ public class PhotoNewDialog extends DialogFragment {
     private EditText txtDescription;
     private Button btnCancel;
     private Button btnAccept;
+    private byte[] byteArray = null;
+
+    private LoadingView loadingView;
 
     private String path;
 
@@ -68,15 +76,11 @@ public class PhotoNewDialog extends DialogFragment {
         btnCancel = view.findViewById(R.id.btnCancel);
         btnAccept = view.findViewById(R.id.btnAccept);
 
-        try {
-            File imageFile = new File(path);
-            final Uri imageUri = Uri.fromFile(imageFile);
-            final InputStream imageStream = getActivity().getContentResolver().openInputStream(imageUri);
-            Bitmap bitmap = BitmapFactory.decodeStream(imageStream);
-            imgPhoto.setImageBitmap(bitmap);
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
+        loadingView = Util.getLoadingView(context);
+        if(!TextUtils.isEmpty(path)) getByteArray();
+
+        Bitmap bitmap = BitmapFactory.decodeByteArray(byteArray, 0, byteArray.length);
+        imgPhoto.setImageBitmap(bitmap);
 
         btnCancel.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -88,39 +92,50 @@ public class PhotoNewDialog extends DialogFragment {
         btnAccept.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String strName = txtName.getText().toString();
-                String strDescription = txtDescription.getText().toString();
+                final String strName = txtName.getText().toString();
+                final String strDescription = txtDescription.getText().toString();
 
                 boolean isEmpty = false;
 
-                if(TextUtils.isEmpty(strName)) {
+                if (TextUtils.isEmpty(strName)) {
                     txtName.setError(getString(R.string.empty_field));
                     isEmpty = true;
                 }
 
-                if(TextUtils.isEmpty(strDescription)) {
+                if (TextUtils.isEmpty(strDescription)) {
                     txtDescription.setError(getString(R.string.empty_field));
                     isEmpty = true;
                 }
 
-                if(isEmpty) return;
+                if (isEmpty) return;
 
-                try {
-                    File imageFile = new File(path);
-                    final Uri imageUri = Uri.fromFile(imageFile);
-                    final InputStream imageStream = getActivity().getContentResolver().openInputStream(imageUri);
-                    Bitmap bitmap = BitmapFactory.decodeStream(imageStream);
-                    ByteArrayOutputStream stream = new ByteArrayOutputStream();
-                    bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
-                    byte[] byteArray = stream.toByteArray();
-                    PhotoController.createPhoto(context, strName, strDescription, byteArray);
-                } catch (FileNotFoundException e) {
-                    e.printStackTrace();
-                }
+                AsyncTask.execute(new Runnable() {
+                    @Override
+                    public void run() {
+                        PhotoController.createPhoto(context, strName, strDescription, byteArray);
+                        getActivity().runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                dismiss();
+                            }
+                        });
+                    }
+                });
             }
         });
 
         return view;
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+
+        Dialog dialog = getDialog();
+        if (dialog != null) {
+            dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+            //dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        }
     }
 
     @Override
@@ -132,5 +147,28 @@ public class PhotoNewDialog extends DialogFragment {
     @Override
     public void onDetach() {
         super.onDetach();
+    }
+
+    public void getByteArray() {
+        try {
+            File imageFile = new File(path);
+            final Uri imageUri = Uri.fromFile(imageFile);
+            String realPath = Util.getRealPathFromURI(context, imageUri);
+
+            final InputStream imageStream;
+            imageStream = getActivity().getContentResolver().openInputStream(imageUri);
+
+            Bitmap bitmap = BitmapFactory.decodeStream(imageStream);
+            double porcentajeHeight = 800.0 / bitmap.getHeight();
+            int nuevoWidth = (int) (bitmap.getWidth() * porcentajeHeight);
+            bitmap = Bitmap.createScaledBitmap(bitmap, nuevoWidth, 800, true);
+            bitmap = Util.getRotatedBitmap(realPath, bitmap);
+            ByteArrayOutputStream stream = new ByteArrayOutputStream();
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream);
+
+            byteArray = stream.toByteArray();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
     }
 }

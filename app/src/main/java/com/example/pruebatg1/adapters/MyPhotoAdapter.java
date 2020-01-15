@@ -1,7 +1,9 @@
 package com.example.pruebatg1.adapters;
 
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,14 +11,17 @@ import android.widget.TextView;
 
 import com.example.pruebatg1.beans.Photo;
 import com.example.pruebatg1.R;
+import com.example.pruebatg1.dialogs.PhotoShowDialog;
 
 import java.util.List;
 
 public class MyPhotoAdapter extends RecyclerView.Adapter<MyPhotoAdapter.ViewHolder> {
 
+    private Context context;
     private final List<Photo> listPhotos;
 
-    public MyPhotoAdapter(List<Photo> listPhotos) {
+    public MyPhotoAdapter(Context context, List<Photo> listPhotos) {
+        this.context = context;
         this.listPhotos = listPhotos;
     }
 
@@ -36,7 +41,9 @@ public class MyPhotoAdapter extends RecyclerView.Adapter<MyPhotoAdapter.ViewHold
         holder.mView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                PhotoShowDialog photoShowDialog = PhotoShowDialog.newInstance(photo.getName(),
+                        photo.getDescription(), photo.getImage());
+                photoShowDialog.show(((AppCompatActivity) context).getSupportFragmentManager(), "photoShow");
             }
         });
     }

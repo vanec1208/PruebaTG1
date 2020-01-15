@@ -25,24 +25,31 @@
             android:id="@+id/lblName"
             android:layout_width="match_parent"
             android:layout_height="50dp"
+            android:background="@drawable/style_edittext"
+            android:gravity="center_vertical"
             android:hint="@string/txt_name"
             android:paddingLeft="10dp"
-            android:paddingRight="10dp" />
+            android:paddingRight="10dp"
+            android:textSize="14sp" />
 
         <TextView
             android:id="@+id/lblDescription"
             android:layout_width="match_parent"
             android:layout_height="100dp"
             android:layout_marginTop="20dp"
+            android:background="@drawable/style_edittext"
+            android:gravity="center_vertical"
             android:hint="@string/txt_description"
             android:paddingLeft="10dp"
-            android:paddingRight="10dp" />
+            android:paddingRight="10dp"
+            android:textSize="14sp" />
     </LinearLayout>
 
     <Button
         android:id="@+id/btnAccept"
         android:layout_width="wrap_content"
         android:layout_height="50dp"
+        android:layout_marginTop="20dp"
         android:text="@string/txt_accept"
         android:textAllCaps="false" />
 </LinearLayout>
