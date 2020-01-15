@@ -7,7 +7,5 @@
     <string name="txt_cancel">Cancelar</string>
     <string name="txt_accept">Aceptar</string>
     <string name="empty_field">Campo obligatorio</string>
-
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="photo_created">Foto creada correctamente</string>
 </resources>

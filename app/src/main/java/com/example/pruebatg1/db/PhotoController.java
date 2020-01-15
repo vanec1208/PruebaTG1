@@ -20,7 +20,8 @@ public class PhotoController {
        values.put(TgTables.PhotoTable.DESCRIPTION, description);
        values.put(TgTables.PhotoTable.IMAGE, image);
 
-        db.insert(TgTables.PhotoTable.TABLE_NAME, null, values);
+        long insert = db.insert(TgTables.PhotoTable.TABLE_NAME, null, values);
+        Log.d("getInsert", "Insert: " + insert);
    }
 
    public static ArrayList<Photo> getListPhotos(Context context){
@@ -42,8 +43,6 @@ public class PhotoController {
             photo.setImage(c.getBlob(2));
             listPhotos.add(photo);
         }
-
-       Log.d("getPicture", "List: " + listPhotos.toString());
 
         return listPhotos;
    }

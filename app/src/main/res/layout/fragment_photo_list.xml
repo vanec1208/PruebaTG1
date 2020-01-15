@@ -15,9 +15,9 @@
 
     <Button
         android:id="@+id/btnAccept"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:layout_marginBottom="20dp"
+        android:layout_marginBottom="10dp"
         android:text="@string/txt_accept"
         android:textAllCaps="false"
         app:layout_constraintBottom_toBottomOf="parent"

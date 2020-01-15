@@ -61,8 +61,10 @@ public class MenuActivity extends AppCompatActivity {
         btnListPhotos.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                loadingView.show();
                 Intent intent = new Intent(MenuActivity.this, PhotoListActivity.class);
                 startActivity(intent);
+                loadingView.hide();
             }
         });
     }
@@ -83,7 +85,12 @@ public class MenuActivity extends AppCompatActivity {
                     return;
                 }
 
-                ImagePicker.cameraOnly().start(MenuActivity.this);
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        ImagePicker.cameraOnly().start(MenuActivity.this);
+                    }
+                });
             } else {
                 AsyncTask.execute(new Runnable() {
                     @Override

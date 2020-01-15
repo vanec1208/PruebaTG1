@@ -11,13 +11,13 @@ import android.os.Bundle;
 import androidx.fragment.app.DialogFragment;
 
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.example.pruebatg1.R;
 import com.example.pruebatg1.db.PhotoController;
@@ -112,10 +112,11 @@ public class PhotoNewDialog extends DialogFragment {
                 AsyncTask.execute(new Runnable() {
                     @Override
                     public void run() {
-                        PhotoController.createPhoto(context, strName, strDescription, byteArray);
                         getActivity().runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
+                                PhotoController.createPhoto(context, strName, strDescription, byteArray);
+                                Toast.makeText(context, getString(R.string.photo_created), Toast.LENGTH_LONG).show();
                                 dismiss();
                             }
                         });

@@ -41,7 +41,6 @@ public class PhotoListFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_photo_list, container, false);
-        Log.d("getPicture", "Holaaaa");
 
         recyclerView = view.findViewById(R.id.recyclerView);
         btnAccept = view.findViewById(R.id.btnAccept);
