@@ -1,0 +1,13 @@
+<resources>
+    <string name="app_name">PruebaTG1</string>
+    <string name="txt_take_photo">Tomar fotografía</string>
+    <string name="txt_list_photos">Listado de fotos</string>
+    <string name="txt_name">Nombre</string>
+    <string name="txt_description">Descripción</string>
+    <string name="txt_cancel">Cancelar</string>
+    <string name="txt_accept">Aceptar</string>
+    <string name="empty_field">Campo obligatorio</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+</resources>
