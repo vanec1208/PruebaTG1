@@ -12,7 +12,18 @@ import java.util.ArrayList;
 
 public class PhotoController {
 
-   public static void createPhoto(Context context, String name, String description, byte[] image){
+    public static boolean hasName(Context context, String name){
+        SQLiteDatabase db = TgDb.getInstance(context);
+
+        Cursor c = db.query(TgTables.PhotoTable.TABLE_NAME, new String[] {TgTables.PhotoTable.NAME},
+                TgTables.PhotoTable.NAME + " = '" + name + "'", null, null, null,
+                null);
+
+        return c.moveToFirst();
+    }
+
+
+    public static boolean createPhoto(Context context, String name, String description, byte[] image){
        SQLiteDatabase db = TgDb.getInstance(context);
 
        ContentValues values = new ContentValues();
@@ -21,7 +32,7 @@ public class PhotoController {
        values.put(TgTables.PhotoTable.IMAGE, image);
 
         long insert = db.insert(TgTables.PhotoTable.TABLE_NAME, null, values);
-        Log.d("getInsert", "Insert: " + insert);
+        return insert > 0;
    }
 
    public static ArrayList<Photo> getListPhotos(Context context){

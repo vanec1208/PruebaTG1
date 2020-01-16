@@ -8,4 +8,6 @@
     <string name="txt_accept">Aceptar</string>
     <string name="empty_field">Campo obligatorio</string>
     <string name="photo_created">Foto creada correctamente</string>
+    <string name="photo_no_created">Error al crear foto</string>
+    <string name="photo_name_created">Nombre ya existente</string>
 </resources>

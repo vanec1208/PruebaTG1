@@ -115,8 +115,17 @@ public class PhotoNewDialog extends DialogFragment {
                         getActivity().runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
-                                PhotoController.createPhoto(context, strName, strDescription, byteArray);
-                                Toast.makeText(context, getString(R.string.photo_created), Toast.LENGTH_LONG).show();
+                                if(PhotoController.hasName(context, strName)) {
+                                    txtName.setError(getString(R.string.photo_name_created));
+                                    return;
+                                }
+
+                                boolean created = PhotoController.createPhoto(context, strName, strDescription, byteArray);
+                                if(created)
+                                    Toast.makeText(context, getString(R.string.photo_created), Toast.LENGTH_LONG).show();
+                                else
+                                    Toast.makeText(context, getString(R.string.photo_no_created), Toast.LENGTH_LONG).show();
+
                                 dismiss();
                             }
                         });
